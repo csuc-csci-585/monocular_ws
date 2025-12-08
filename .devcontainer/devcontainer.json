@@ -1,0 +1,29 @@
+{
+    "name": "TurtleBot3 ROS2 Development",
+    "dockerFile": "Dockerfile",
+    "runArgs": [
+        "--privileged",
+        "--network=host",
+        "--gpus=all"
+    ],
+    "workspaceMount": "source=${localWorkspaceFolder},target=/home/ros/host_workspace,type=bind",
+    "workspaceFolder": "/home/ros/monocular_ws",
+    "containerEnv": {
+        "DISPLAY": ":1"
+    },
+    "features": {
+        "ghcr.io/devcontainers/features/desktop-lite:1": {
+            "password": "ros",
+            "webPort": "6080",
+            "vncPort": "5901"
+        }
+    },
+    "postCreateCommand": "bash -c 'find /home/ros/host_workspace -maxdepth 1 -type d ! -path /home/ros/host_workspace ! -name .devcontainer -exec ln -sf {} /home/ros/monocular_ws/src/ \\; && cd /home/ros/monocular_ws && source /opt/ros/humble/setup.bash && colcon build --symlink-install --packages-select $(find /home/ros/host_workspace -maxdepth 1 -type d ! -path /home/ros/host_workspace ! -name .devcontainer -exec basename {} \\;)'",
+    "forwardPorts": [6080],
+    "portsAttributes": {
+        "6080": {
+            "label": "Desktop (noVNC)"
+        }
+    },
+    "remoteUser": "ros"
+}
