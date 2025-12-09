@@ -1,0 +1,27 @@
+# Ignore model files in models directory
+src/mypackage/turtlebot_depth/models/*.pth
+src/mypackage/turtlebot_depth/models/*.pt
+src/mypackage/turtlebot_depth/models/*.h5
+src/mypackage/turtlebot_depth/models/*.ckpt
+src/mypackage/turtlebot_depth/models/*.onnx
+
+# Ignore other common model formats
+*.pth
+*.pt
+*.h5
+*.ckpt
+*.onnx
+
+# Ignore Python cache and build files
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+build/
+dist/
+
+# Ignore VS Code settings
+.vscode/
+
+# Ignore environment files
+.env
