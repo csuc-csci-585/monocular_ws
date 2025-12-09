@@ -265,6 +265,17 @@
         <camera_name>sim_camera</camera_name>
         <frame_name>camera_link</frame_name>
         <hack_baseline>0.07</hack_baseline>
+        <!-- QoS settings to match depth_anything_v2_ros2 expectations -->
+        <qos>
+          <topic name="sim_camera/image_raw">
+            <publisher>
+              <reliability>best_effort</reliability>
+              <durability>volatile</durability>
+              <history>keep_last</history>
+              <depth>1</depth>
+            </publisher>
+          </topic>
+        </qos>
       </plugin>
     </sensor>
   </gazebo>
