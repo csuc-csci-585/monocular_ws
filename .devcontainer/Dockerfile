@@ -18,8 +18,6 @@ RUN apt-get update && \
       wget \
       # Python dependencies for DepthAnything V2
       python3-pip \
-      python3-torch \
-      python3-torchvision \
       python3-opencv \
       python3-numpy \
       python3-matplotlib \
@@ -53,8 +51,9 @@ RUN apt-get update && \
       ros-${ROS_DISTRO}-rqt-reconfigure \
       && rm -rf /var/lib/apt/lists/*
 
-# Install additional Python dependencies for DepthAnything V2
-RUN pip3 install transformers timm einops
+# Install latest PyTorch with CUDA support and additional Python dependencies for DepthAnything V2
+RUN pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu121 && \
+    pip3 install transformers timm einops
 
 # Create a non-root user that matches host UID/GID
 RUN groupadd --gid $USER_GID ros && \
