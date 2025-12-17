@@ -33,7 +33,7 @@ def generate_launch_description():
     
     # Depth Anything configuration
     depth_params_file = os.path.join(turtlebot_depth_pkg, 'config', 'depth_anything_params.yaml')
-    default_model_file = os.path.join(turtlebot_depth_pkg, 'models', 'depth_anything_v2_vits.pth')
+    default_model_file = os.path.join(turtlebot_depth_pkg, 'models', 'depth_anything_v2_metric_hypersim_vits.pth')
     model_file = LaunchConfiguration('model_file')
     
     # Launch arguments

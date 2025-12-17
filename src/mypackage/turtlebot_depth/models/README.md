@@ -1,44 +1,33 @@
-# Depth Anything V2 Models
+# Depth Anything V2 models
 
-## Download Instructions
+## Purpose
 
-Download the Depth Anything V2 model from Hugging Face and place it in this directory.
+This folder stores Depth-Anything-V2 model weights used by the `turtlebot_depth` package. For RTAB-Map and
+other SLAM systems you must use a *metric* depth model (provides real distances). Relative depth models only
+provide scale-normalized depth and are not suitable for generating metric 3D point clouds.
 
-### Available Models
+## Recommended model (metric)
 
-Choose one of the following models based on your needs:
+For indoor monocular SLAM we recommend the Metric Hypersim Small model. Download and place it in this
+directory:
 
-1. **Small (ViT-S)** - Fastest, lowest accuracy
-   ```bash
-   wget https://huggingface.co/depth-anything/Depth-Anything-V2-Small/resolve/main/depth_anything_v2_vits.pth
-   ```
-
-2. **Base (ViT-B)** - Balanced performance
-   ```bash
-   wget https://huggingface.co/depth-anything/Depth-Anything-V2-Base/resolve/main/depth_anything_v2_vitb.pth
-   ```
-
-3. **Large (ViT-L)** - Best accuracy, slower
-   ```bash
-   wget https://huggingface.co/depth-anything/Depth-Anything-V2-Large/resolve/main/depth_anything_v2_vitl.pth
-   ```
-
-### Quick Download (Recommended: Small model)
-
-From this directory, run:
 ```bash
 cd /home/ros/monocular_ws/src/src/mypackage/turtlebot_depth/models
-wget https://huggingface.co/depth-anything/Depth-Anything-V2-Small/resolve/main/depth_anything_v2_vits.pth
+wget https://huggingface.co/depth-anything/Depth-Anything-V2-Metric-Hypersim-Small/resolve/main/depth_anything_v2_metric_hypersim_vits.pth
 ```
 
-### Using a Different Model
+Then launch using the model file explicitly if needed:
 
-If you download a different model variant, update the `encoder` parameter in `config/depth_anything_params.yaml`:
-- For ViT-S: `encoder: vits`
-- For ViT-B: `encoder: vitb`
-- For ViT-L: `encoder: vitl`
-
-And specify the model file when launching:
 ```bash
-ros2 launch turtlebot_depth gazebo_with_depth.launch.py model_file:=/path/to/your/model.pth
+ros2 launch turtlebot_depth gazebo_with_depth.launch.py model_file:=/home/ros/monocular_ws/src/src/mypackage/turtlebot_depth/models/depth_anything_v2_metric_hypersim_vits.pth
 ```
+
+## Encoder parameter
+
+If you change to a different family of model, update the `encoder` in `config/depth_anything_params.yaml`:
+
+- For ViT-S (small): `encoder: vits`
+- For ViT-B (base): `encoder: vitb`
+- For ViT-L (large): `encoder: vitl`
+
+Use the metric Hypersim model for SLAM and point cloud generation.

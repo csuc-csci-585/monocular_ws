@@ -20,6 +20,11 @@ __pycache__/
 build/
 dist/
 
+# Ignore ROS 2 build artifacts
+build/
+install/
+log/
+
 # Ignore VS Code settings
 .vscode/
 
