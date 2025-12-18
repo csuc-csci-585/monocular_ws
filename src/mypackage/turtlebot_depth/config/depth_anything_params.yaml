@@ -1,14 +1,20 @@
 depth_anything:
   ros__parameters:
     # Model configuration
-    model_file: ''  # Will be set via launch file
-    encoder: vits  # Using smaller/faster model for real-time performance
-    device: 'cuda:0'  # Using GPU - RTX 4090
+    # Model file path - relative to package models directory
+    # Available models in models/:
+    #   - depth_anything_v2_metric_hypersim_vits.pth (small, fast, indoor scenes) ✓ DEFAULT
+    #   - depth_anything_v2_metric_hypersim_vitb.pth (base, accurate, indoor scenes)
+    #   - depth_anything_v2_metric_vkitti_vits.pth (small, fast, outdoor scenes)
+    #   - depth_anything_v2_metric_vkitti_vitb.pth (base, accurate, outdoor scenes)
+    model_file: 'depth_anything_v2_metric_hypersim_vitb.pth'
+    encoder: vitb  # Using smaller/faster model for real-time performance
+    device: 'cuda:0'  # Using GPU
     max_depth: 20.0  # Increased for indoor navigation
 
     # Performance optimization - downsample before inference
-    inference_width: 640
-    inference_height: 480
+    inference_width: 320   # Full resolution (320x480)
+    inference_height: 240  # Set to 320x240 for 4x speedup at cost of quality
 
     # ROS topic configuration
     image_topic: /sim_camera/image_raw

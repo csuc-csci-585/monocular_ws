@@ -2,7 +2,7 @@
 
 import os
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, TimerAction, ExecuteProcess, RegisterEventHandler
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, ExecuteProcess, RegisterEventHandler
 from launch.event_handlers import OnProcessExit
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
@@ -36,8 +36,7 @@ def generate_launch_description():
 
     # Depth Anything configuration
     depth_params_file = os.path.join(turtlebot_depth_pkg, 'config', 'depth_anything_params.yaml')
-    default_model_file = os.path.join(turtlebot_depth_pkg, 'models', 'depth_anything_v2_metric_hypersim_vits.pth')
-    model_file = LaunchConfiguration('model_file')
+    models_dir = os.path.join(turtlebot_depth_pkg, 'models')
 
     # Launch arguments
     declare_use_sim_time = DeclareLaunchArgument(
@@ -56,12 +55,6 @@ def generate_launch_description():
         'y_pose',
         default_value='0.0',
         description='Robot Y position'
-    )
-
-    declare_model_file = DeclareLaunchArgument(
-        'model_file',
-        default_value=default_model_file,
-        description='Full path to the Depth Anything V2 model file'
     )
 
     declare_log_level = DeclareLaunchArgument(
@@ -113,9 +106,17 @@ def generate_launch_description():
         arguments=['-d', rviz_config]
     )
 
-    # Configure Depth Anything parameters
+    # Expand relative model path to absolute path
+    # The config file specifies just the filename, we expand it to full path
+    # First, read the config to get the model filename
+    import yaml
+    with open(depth_params_file, 'r') as f:
+        config = yaml.safe_load(f)
+    model_filename = config['depth_anything']['ros__parameters']['model_file']
+    full_model_path = os.path.join(models_dir, model_filename)
+
     param_substitutions = {
-        'model_file': model_file,
+        'model_file': full_model_path
     }
 
     configured_params = RewrittenYaml(
@@ -216,7 +217,6 @@ def generate_launch_description():
         declare_use_sim_time,
         declare_x_pose,
         declare_y_pose,
-        declare_model_file,
         declare_log_level,
         start_gazebo,
         spawn_entity,

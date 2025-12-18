@@ -6,7 +6,22 @@ Navigate to the models directory and download the model:
 
 ```bash
 cd /home/ros/monocular_ws/src/src/mypackage/turtlebot_depth/models
-wget https://huggingface.co/depth-anything/Depth-Anything-V2-Small/resolve/main/depth_anything_v2_vits.pth
+
+# Depth-Anything V2 Metric Hypersim Small (vits)
+wget -O depth_anything_v2_metric_hypersim_vits.pth \
+  "https://huggingface.co/depth-anything/Depth-Anything-V2-Metric-Hypersim-Small/resolve/main/depth_anything_v2_metric_hypersim_vits.pth?download=true"
+
+# Depth-Anything V2 Metric Hypersim Base (vitb)
+wget -O depth_anything_v2_metric_hypersim_vitb.pth \
+  "https://huggingface.co/depth-anything/Depth-Anything-V2-Metric-Hypersim-Base/resolve/main/depth_anything_v2_metric_hypersim_vitb.pth?download=true"
+
+# Depth-Anything V2 Metric VKITTI Small (vits)
+wget -O depth_anything_v2_metric_vkitti_vits.pth \
+  "https://huggingface.co/depth-anything/Depth-Anything-V2-Metric-VKITTI-Small/resolve/main/depth_anything_v2_metric_vkitti_vits.pth?download=true"
+
+# Depth-Anything V2 Metric VKITTI Base (vitb)
+wget -O depth_anything_v2_metric_vkitti_vitb.pth \
+  "https://huggingface.co/depth-anything/Depth-Anything-V2-Metric-VKITTI-Base/resolve/main/depth_anything_v2_metric_vkitti_vitb.pth?download=true"
 ```
 
 ## 2. Build the Package
@@ -20,7 +35,7 @@ source install/setup.bash
 ## 3. Launch the Simulation with Depth Estimation
 
 ```bash
-ros2 launch turtlebot_depth gazebo_with_depth.launch.py
+ros2 launch turtlebot_depth gazebo_with_depth.launch.py log_level:=debug
 ```
 
 ## Optional Launch Arguments
