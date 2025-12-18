@@ -235,6 +235,17 @@
     </inertial>
   </link>
 
+  <!-- Camera Optical Frame (ROS convention: X=right, Y=down, Z=forward) -->
+  <joint name="camera_optical_joint" type="fixed">
+    <parent link="camera_link"/>
+    <child link="camera_link_optical"/>
+    <origin xyz="0 0 0" rpy="-1.5708 0 -1.5708"/>
+  </joint>
+
+  <link name="camera_link_optical">
+    <!-- Empty link, just for TF frame -->
+  </link>
+
   <!-- Gazebo Camera Sensor Plugin -->
   <gazebo reference="camera_link">
     <sensor type="camera" name="sim_camera">
@@ -263,7 +274,7 @@
           <argument>camera/camera_info:=camera/camera_info</argument>
         </ros>
         <camera_name>sim_camera</camera_name>
-        <frame_name>camera_link</frame_name>
+        <frame_name>camera_link_optical</frame_name>
         <hack_baseline>0.07</hack_baseline>
         <!-- QoS settings to match depth_anything_v2_ros2 expectations -->
         <qos>
@@ -272,10 +283,51 @@
               <reliability>best_effort</reliability>
               <durability>volatile</durability>
               <history>keep_last</history>
-              <depth>1</depth>
+              <depth>10</depth>
             </publisher>
           </topic>
         </qos>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <!-- IMU Sensor -->
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="imu_link"/>
+    <origin xyz="0.0 0.0 0.068" rpy="0 0 0"/>
+  </joint>
+
+  <link name="imu_link">
+    <inertial>
+      <mass value="0.001"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6"/>
+    </inertial>
+  </link>
+
+  <!-- Gazebo IMU Sensor Plugin (ROS2) -->
+  <gazebo reference="imu_link">
+    <sensor type="imu" name="imu_sensor">
+      <always_on>true</always_on>
+      <update_rate>100.0</update_rate>
+
+      <plugin name="imu_plugin" filename="libgazebo_ros_imu_sensor.so">
+        <ros>
+          <namespace></namespace>
+          <remapping>~/out:=imu/data</remapping>
+        </ros>
+
+        <frame_name>imu_link</frame_name>
+        <initial_orientation_as_reference>false</initial_orientation_as_reference>
+
+        <!-- Noise parameters (realistic values for MEMS IMU) -->
+        <angular_velocity_stdev>0.0002</angular_velocity_stdev>
+        <linear_acceleration_stdev>0.0003</linear_acceleration_stdev>
+
+        <!-- Bias parameters -->
+        <angular_velocity_bias_stdev>0.00001</angular_velocity_bias_stdev>
+        <linear_acceleration_bias_stdev>0.00001</linear_acceleration_bias_stdev>
       </plugin>
     </sensor>
   </gazebo>

@@ -24,6 +24,9 @@ setup(
         # Install models directory and README
         ('share/' + package_name + '/models',
             [f for f in glob.glob('models/*') if f.endswith(('.pth', '.md'))]),
+        # Install scripts
+        ('share/' + package_name + '/scripts',
+            [f for f in glob.glob('scripts/*')]),
     ],
     install_requires=['setuptools'],
     zip_safe=True,

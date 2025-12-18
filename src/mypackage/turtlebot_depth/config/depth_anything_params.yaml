@@ -2,10 +2,14 @@ depth_anything:
   ros__parameters:
     # Model configuration
     model_file: ''  # Will be set via launch file
-    encoder: vits
+    encoder: vits  # Using smaller/faster model for real-time performance
     device: 'cuda:0'  # Using GPU - RTX 4090
     max_depth: 20.0  # Increased for indoor navigation
-    
+
+    # Performance optimization - downsample before inference
+    inference_width: 640
+    inference_height: 480
+
     # ROS topic configuration
     image_topic: /sim_camera/image_raw
     depth_image_topic: /sim_camera/depth
